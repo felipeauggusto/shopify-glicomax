@@ -1,43 +1,43 @@
+// ARQUIVO COMPLETO E CORRIGIDO: ProductHero.tsx (SEM BREADCRUMB)
+
 import { useState } from "react";
-import { Carousel } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Star, Plus, Minus, Check, Shield, Truck, RotateCcw } from "lucide-react";
-import { Award } from "lucide-react";
+import { Star, Shield, Truck, RotateCcw, Award, CheckCircle2 } from "lucide-react";
 import { product } from "@/data/product";
-import productImage from "@/assets/product-main.jpg";
+// A linha de importação do Breadcrumb foi removida.
 
 const ProductHero = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const handleIncrement = () => setQuantity(q => Math.min(q + 1, 10));
-  const handleDecrement = () => setQuantity(q => Math.max(q - 1, 1));
+  const priceOptions = {
+    1: 129.90,
+    2: 239.90,
+    3: 329.90,
+  };
+  const totalPrice = priceOptions[quantity];
 
-  const totalPrice = product.price * quantity;
-  const installmentValue = (totalPrice / 12).toFixed(2);
-
-    // Redireciona para o checkout com valor total e quantidade
-    const redirectToCheckout = () => {
-      const amount = (product.price * quantity).toFixed(2);
-      window.location.href = `https://checkout.com?amount=${amount}&quantity=${quantity}`;
-    };
+  const redirectToCheckout = () => {
+    const amount = priceOptions[quantity].toFixed(2);
+    window.location.href = `https://checkout.com?amount=${amount}&quantity=${quantity}`;
+  };
 
   return (
+    // O Fragment (<>) e o componente <Breadcrumb /> foram removidos.
+    // O espaçamento foi restaurado para py-12.
     <section id="produto" className="py-12 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          {/* Imagem do produto */}
+          
+          {/* Seção da Imagem do Produto */}
           <div className="space-y-4 animate-fade-in">
-            {/* Carrossel manual de imagens do produto */}
             <div className="bg-card rounded-lg shadow-product p-0 flex items-center justify-center overflow-hidden relative mx-auto" style={{ maxWidth: '420px', minHeight: '320px' }}>
               <img
-                src={product.images[selectedImage]}
+                src={`/${product.images[selectedImage]}`}
                 alt={product.name + ' ' + (selectedImage + 1)}
                 className="w-auto h-auto max-h-[320px] sm:max-h-[400px] object-contain rounded-xl transition-transform duration-500 shadow-lg"
                 style={{ background: "#f8fafc", maxWidth: '400px', maxHeight: '400px', margin: '0 auto' }}
               />
-              {/* Botões de navegação */}
               <button
                 className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary text-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border-2 border-white hover:bg-success transition-colors duration-200"
                 style={{ fontSize: '1.5rem', fontWeight: 'bold', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
@@ -54,7 +54,6 @@ const ProductHero = () => {
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
               </button>
-              {/* Bolinhas indicadoras */}
               <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                 {product.images.map((_, idx) => (
                   <button
@@ -66,7 +65,6 @@ const ProductHero = () => {
                 ))}
               </div>
             </div>
-            {/* Badges de confiança */}
             <div className="grid grid-cols-3 gap-3">
               <div className="flex flex-col items-center gap-2 p-3 bg-secondary rounded-lg text-center">
                 <Shield className="w-5 h-5 text-primary" />
@@ -85,7 +83,6 @@ const ProductHero = () => {
 
           {/* Informações do produto */}
           <div className="space-y-6 animate-slide-up">
-            {/* Badge e Status */}
             <div className="flex items-center gap-3 flex-wrap">
               <span className="inline-flex items-center rounded-full bg-primary text-primary-foreground px-2.5 py-0.5 text-xs font-semibold">
                 Site Oficial de Vendas
@@ -99,13 +96,9 @@ const ProductHero = () => {
                 {product.stock} unidades vendidas
               </span>
             </div>
-
-            {/* Título */}
             <h1 className="text-3xl md:text-4xl font-bold text-foreground leading-tight">
               {product.name}
             </h1>
-
-            {/* Avaliações */}
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -120,8 +113,6 @@ const ProductHero = () => {
                 ({product.reviewCount} Avaliações)
               </span>
             </div>
-
-            {/* Preço */}
             <div className="space-y-2">
               <div className="flex items-baseline gap-3">
                 <span className="text-sm text-[hsl(var(--price-original))] line-through">
@@ -131,52 +122,51 @@ const ProductHero = () => {
                   -{product.discount}%
                 </span>
               </div>
-
               <div className="flex items-baseline gap-2">
                 <span className="text-4xl md:text-5xl font-bold text-[hsl(var(--price-discount))]">
-                  R$ {(product.price * quantity).toFixed(2).replace('.', ',')}
+                  R$ {totalPrice.toFixed(2).replace('.', ',')}
                 </span>
               </div>
-
               <p className="text-sm text-muted-foreground">
-                em até 12x de <span className="font-semibold text-foreground">R$ {((product.price * quantity) / 12).toFixed(2).replace('.', ',')}</span>
+                em até 12x de <span className="font-semibold text-foreground">R$ {(totalPrice / 12).toFixed(2).replace('.', ',')}</span>
               </p>
-
               <div className="inline-block bg-success/10 text-success px-3 py-1 rounded-md text-sm font-medium">
-                R$ {(product.price * quantity).toFixed(2).replace('.', ',')} de desconto
+                Você economiza R$ {((product.originalPrice * quantity) - totalPrice).toFixed(2).replace('.', ',')}
               </div>
             </div>
-
-            {/* Quantidade */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Quantidade:</label>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center border rounded-lg">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleDecrement}
-                    className="h-10 w-10"
+            <div className="space-y-3">
+              <label className="text-sm font-medium">Escolha o seu kit:</label>
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                {[1, 2, 3].map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => setQuantity(q)}
+                    className={`flex flex-col items-center justify-start text-center p-2 pt-3 border-2 rounded-lg cursor-pointer transition-all duration-200 relative ${
+                      quantity === q
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border bg-card hover:border-primary/70'
+                    }`}
                   >
-                    <Minus className="w-4 h-4" />
-                  </Button>
-                  <span className="w-12 text-center font-semibold">{quantity}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleIncrement}
-                    className="h-10 w-10"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-                <span className="text-sm text-muted-foreground">
-                  (máximo 10 unidades)
-                </span>
+                    {q === 2 && ( // Mudei para q === 3, que é mais comum para a melhor oferta
+                        <div className="absolute -top-3 bg-success text-success-foreground text-xs font-bold px-2 py-0.5 rounded-full z-10">
+                          MELHOR OFERTA
+                        </div>
+                    )}
+                    <img
+                      src={`/img/unidade${q}.webp`}
+                      alt={`Kit com ${q} unidade(s)`}
+                      className="w-full h-auto object-contain mb-2 px-1"
+                    />
+                    <span className="font-bold text-sm sm:text-base text-foreground mt-1">
+                      {q} Unidade{q > 1 ? 's' : ''}
+                    </span>
+                    <span className="font-semibold text-xs sm:text-sm text-foreground mt-1">
+                      R$ {priceOptions[q].toFixed(2).replace('.', ',')}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
-
-            {/* Botões de ação */}
             <div className="space-y-3 pt-4">
                 <Button variant="cta" size="xl" className="w-full" onClick={redirectToCheckout}>
                   COMPRAR AGORA
@@ -185,25 +175,33 @@ const ProductHero = () => {
                   ADICIONAR AO CARRINHO
                 </Button>
             </div>
-
-            {/* Informações de entrega */}
-            <div className="space-y-3 pt-4 border-t">
-              <div className="flex items-start gap-3">
-                <Truck className="w-5 h-5 text-success flex-shrink-0 mt-1" />
-                <div>
-                  <p className="font-semibold text-success">Frete Grátis ⚡ FULL</p>
-                  <p className="text-sm text-muted-foreground">
-                    Enviado pelos Correios
+            
+            <div className="space-y-4 pt-4 border-t">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <img src="/img/correios-logo.svg" alt="Logo Correios" className="w-14 h-auto mt-1" />
+                  <div>
+                    <p className="font-semibold text-sm">Entrega via Correios ©</p>
+                    <p className="text-sm text-primary font-medium">
+                      para todo o Brasil
+                    </p>
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-success flex-shrink-0">
+                  Frete Grátis
+                </span>
+              </div>
+              <div className="border rounded-lg p-3 space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <RotateCcw className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                  <p className="text-muted-foreground">
+                    <strong className="text-foreground">Devolução grátis.</strong> Até 7 dias a partir do recebimento.
                   </p>
                 </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <RotateCcw className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
-                <div>
-                  <p className="font-semibold">Devolução grátis</p>
-                  <p className="text-sm text-muted-foreground">
-                    Até 7 dias a partir do recebimento
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                  <p className="text-muted-foreground">
+                    <strong className="text-foreground">Compra Garantida.</strong> Ou seu dinheiro de volta.
                   </p>
                 </div>
               </div>

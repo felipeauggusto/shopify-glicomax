@@ -49,7 +49,7 @@ const CTASection = () => {
           </Button>
 
           <p className="text-sm opacity-75">
-            ⏰ Oferta por tempo limitado - Estoque de {1541} unidades
+            ⏰ Oferta por tempo limitado - Estoque de {257} unidades
           </p>
         </div>
       </div>

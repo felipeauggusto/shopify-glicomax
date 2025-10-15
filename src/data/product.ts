@@ -22,10 +22,10 @@ export interface Product {
 
 export const product: Product = {
   id: "1",
-  name: "Kit 2 GlicoMax Medidor de Glicose a Laser e Oxímetro",
+  name: "GlicoMax Medidor de Glicose a Laser e Oxímetro",
   description: "Portátil, Seguro e Prático - Monitor de glicose e oxímetro digital de última geração para monitoramento preciso da sua saúde.",
-  price: 187.00,
-  originalPrice: 374.00,
+  price: 129.90,
+  originalPrice: 259.90,
   discount: 50,
   images: [
     "img/glicomax1.webp",
